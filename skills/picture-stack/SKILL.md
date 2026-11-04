@@ -5,6 +5,15 @@ description: A small cluster of photographs floats above the speaker in the orig
 
 # /picture-stack
 
+## Codex Cloud
+
+Invoke with `$picture-stack` followed by the clip or spec path and the requested edit.
+Read [AGENTS.md](../../AGENTS.md) for cloud setup, credentials and validation.
+Resolve this SKILL.md to its real path before locating the shared `kit/`; keep the whole repository together.
+If the Codex catalog shows `editing-skills:picture-stack`, invoke `$editing-skills:picture-stack` instead.
+Claude Code continues to use `/picture-stack`.
+
+
 Apply this treatment to a portrait clip using the included 4.2-second, 1080x1920, 30fps starter. The style and images are independent of the sample speaker’s words; follow the user’s chosen topic. [See the reviewed example](../../docs/style-showcase/picture-stack.mp4).
 
 ## Use

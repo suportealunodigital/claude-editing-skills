@@ -5,6 +5,14 @@ description: Edits a talking-head clip into an explainer reel. The speaker sits 
 
 # /explainer
 
+## Codex Cloud
+
+Invoke with `$explainer` followed by the clip or spec path and the requested edit.
+Read [AGENTS.md](../../AGENTS.md) for cloud setup, credentials and validation.
+Resolve this SKILL.md to its real path before locating the shared `kit/`; keep the whole repository together.
+If the Codex catalog shows `editing-skills:explainer`, invoke `$editing-skills:explainer` instead.
+Claude Code continues to use `/explainer`.
+
 ```
 ┌──────────────────────┐
 │   Steal what works   │  title, one word in serif italic
@@ -17,10 +25,10 @@ description: Edits a talking-head clip into an explainer reel. The speaker sits 
 ```
 
 ## First use
-This skill's folder is the "Base directory" Claude Code shows when it loads it. Resolve the kit from it (works through symlinks), and set up once:
+Use the directory containing this SKILL.md (Codex skill location or Claude Code Base directory). Resolve the kit from it (works through symlinks), and set up once:
 ```bash
-SKILL_DIR="<base directory of this skill>"   # the path Claude Code printed as "Base directory for this skill"
-KIT=$(python3 -c 'import os,sys;print(os.path.realpath(os.path.join(sys.argv[1],"..","..","kit")))' "$SKILL_DIR")
+SKILL_DIR="<base directory of this skill>"   # directory containing the loaded SKILL.md
+KIT=$(python3 -c 'import os,sys;print(os.path.realpath(os.path.join(os.path.realpath(sys.argv[1]),"..","..","kit")))' "$SKILL_DIR")
 PY="$KIT/.venv/bin/python"; [ -x "$PY" ] || bash "$KIT/setup.sh" --cutout
 ```
 `GROQ_API_KEY` must be set to transcribe (free at console.groq.com). Needs ffmpeg and Node.

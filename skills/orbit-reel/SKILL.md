@@ -5,6 +5,15 @@ description: Portrait image cards travel around the speaker in a 3D ring, passin
 
 # /orbit-reel
 
+## Codex Cloud
+
+Invoke with `$orbit-reel` followed by the clip or spec path and the requested edit.
+Read [AGENTS.md](../../AGENTS.md) for cloud setup, credentials and validation.
+Resolve this SKILL.md to its real path before locating the shared `kit/`; keep the whole repository together.
+If the Codex catalog shows `editing-skills:orbit-reel`, invoke `$editing-skills:orbit-reel` instead.
+Claude Code continues to use `/orbit-reel`.
+
+
 Apply this treatment to a portrait clip using the included 4.2-second, 1080x1920, 30fps starter. The style and images are independent of the sample speaker’s words; follow the user’s chosen topic. [See the reviewed example](../../docs/style-showcase/orbit-reel.mp4).
 
 ## Use

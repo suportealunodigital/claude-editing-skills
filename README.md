@@ -102,3 +102,14 @@ To add a skill, copy a folder in `skills/` and change its `build.py`. The origin
 - The fonts are Inter, Archivo Black, DM Serif Display, Instrument Serif, Pixelify Sans and TikTok Sans, all under the SIL Open Font License.
 
 Made by [Artem Novitckii](https://novitckii.com). Code and authored instructions are MIT licensed; [image and sample-media rights are separate](assets/style-showcase/README.md#rights-and-sample-footage).
+
+## OpenAI Codex Cloud
+
+All eleven skills also work as Codex repository skills, discovered through
+`.agents/skills/`. The original Claude install and plugin remain supported.
+Use `bash install-codex.sh --skip-setup` for discovery only, or
+`bash install-codex.sh` for the shared setup. Invoke, for example,
+`$explainer /workspace/media/clip.mp4` or
+`$orbit-reel skills/orbit-reel/example.json`.
+See [AGENTS.md](AGENTS.md) for all eleven invocations, Cloud dependencies,
+network/credential setup and honest output verification.

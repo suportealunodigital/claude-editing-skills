@@ -5,6 +5,14 @@ description: Edits a talking-head clip into a storytelling reel. Three simple im
 
 # /storytelling
 
+## Codex Cloud
+
+Invoke with `$storytelling` followed by the clip or spec path and the requested edit.
+Read [AGENTS.md](../../AGENTS.md) for cloud setup, credentials and validation.
+Resolve this SKILL.md to its real path before locating the shared `kit/`; keep the whole repository together.
+If the Codex catalog shows `editing-skills:storytelling`, invoke `$editing-skills:storytelling` instead.
+Claude Code continues to use `/storytelling`.
+
 ```
 ┌──────────────────────┐
 │ [4:12] [cover] [comments] │  three cards, all at once
@@ -17,10 +25,10 @@ description: Edits a talking-head clip into a storytelling reel. Three simple im
 ```
 
 ## First use
-This skill's folder is the "Base directory" Claude Code shows when it loads it.
+Use the directory containing this SKILL.md (Codex skill location or Claude Code Base directory).
 ```bash
-SKILL_DIR="<base directory of this skill>"   # the path Claude Code printed as "Base directory for this skill"
-KIT=$(python3 -c 'import os,sys;print(os.path.realpath(os.path.join(sys.argv[1],"..","..","kit")))' "$SKILL_DIR")
+SKILL_DIR="<base directory of this skill>"   # directory containing the loaded SKILL.md
+KIT=$(python3 -c 'import os,sys;print(os.path.realpath(os.path.join(os.path.realpath(sys.argv[1]),"..","..","kit")))' "$SKILL_DIR")
 PY="$KIT/.venv/bin/python"; [ -x "$PY" ] || bash "$KIT/setup.sh"
 ```
 `GROQ_API_KEY` must be set to transcribe. Needs ffmpeg and Node.

@@ -5,6 +5,15 @@ description: An image above the isolated speaker changes from a complete view to
 
 # /visual-notes
 
+## Codex Cloud
+
+Invoke with `$visual-notes` followed by the clip or spec path and the requested edit.
+Read [AGENTS.md](../../AGENTS.md) for cloud setup, credentials and validation.
+Resolve this SKILL.md to its real path before locating the shared `kit/`; keep the whole repository together.
+If the Codex catalog shows `editing-skills:visual-notes`, invoke `$editing-skills:visual-notes` instead.
+Claude Code continues to use `/visual-notes`.
+
+
 Apply this treatment to a portrait clip using the included 4.2-second, 1080x1920, 30fps starter. The style and images are independent of the sample speaker’s words; follow the user’s chosen topic. [See the reviewed example](../../docs/style-showcase/visual-notes.mp4).
 
 ## Use

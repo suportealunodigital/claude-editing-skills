@@ -5,6 +5,15 @@ description: A photographic match cut aligns circular subjects at one fixed anch
 
 # /shape-shift
 
+## Codex Cloud
+
+Invoke with `$shape-shift` followed by the clip or spec path and the requested edit.
+Read [AGENTS.md](../../AGENTS.md) for cloud setup, credentials and validation.
+Resolve this SKILL.md to its real path before locating the shared `kit/`; keep the whole repository together.
+If the Codex catalog shows `editing-skills:shape-shift`, invoke `$editing-skills:shape-shift` instead.
+Claude Code continues to use `/shape-shift`.
+
+
 Apply this treatment to a portrait clip using the included 4.2-second, 1080x1920, 30fps starter. The style and images are independent of the sample speaker’s words; follow the user’s chosen topic. [See the reviewed example](../../docs/style-showcase/shape-shift.mp4).
 
 ## Use

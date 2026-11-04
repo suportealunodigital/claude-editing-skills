@@ -5,6 +5,15 @@ description: Full-frame photographic backgrounds cut behind a continuously visib
 
 # /scene-switch
 
+## Codex Cloud
+
+Invoke with `$scene-switch` followed by the clip or spec path and the requested edit.
+Read [AGENTS.md](../../AGENTS.md) for cloud setup, credentials and validation.
+Resolve this SKILL.md to its real path before locating the shared `kit/`; keep the whole repository together.
+If the Codex catalog shows `editing-skills:scene-switch`, invoke `$editing-skills:scene-switch` instead.
+Claude Code continues to use `/scene-switch`.
+
+
 Apply this treatment to a portrait clip using the included 4.2-second, 1080x1920, 30fps starter. The style and images are independent of the sample speaker’s words; follow the user’s chosen topic. [See the reviewed example](../../docs/style-showcase/scene-switch.mp4).
 
 ## Use
