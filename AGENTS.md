@@ -1,6 +1,6 @@
 # Video editing in OpenAI Codex Cloud
 
-The canonical skills are in `skills/`. Eleven tracked relative symlinks in
+The canonical skills are in `skills/`. Twelve tracked relative symlinks (eleven treatments plus auto-reels) in
 `.agents/skills/` expose them to Codex without duplicating instructions or changing
 the Claude plugin. Keep `skills/`, `kit/` and `assets/` together. Resolve the loaded
 SKILL.md symlink before locating its sibling build.py or the shared kit.
@@ -36,7 +36,8 @@ a result` even when Chromium is installed. Use the platform permission mechanism
 for the render and keep its network policy in effect. Do not disable browser or
 platform security as a workaround. The five-template builder accepts
 `HYPERFRAMES_CLI=/absolute/path/to/hyperframes/dist/cli.js` to reuse a verified
-0.8.214 installation. This override does not apply to the original six workflows.
+0.8.214 installation. The original six workflows also accept this optional override; without it they
+retain their legacy default. auto-reels always requires 0.8.214.
 
 Network must allow PyPI, npm, cdnjs.cloudflare.com, cdn.jsdelivr.net and the
 browser/package download hosts actually requested by HyperFrames. New cutouts
@@ -87,7 +88,7 @@ footage for the user's clip. Respect the separate asset licenses.
 
 ## Verification and delivery
 
-Run `python3 -m unittest discover -s tests -v` and `bash -n install.sh install-codex.sh
+Run `kit/.venv/bin/python -m unittest discover -s tests -v` and `bash -n install.sh install-codex.sh
 kit/setup.sh`. Test discovery through Codex's `skills/list` when available; static
 link checks alone do not prove that a running Cloud task has refreshed its catalog.
 There was no upstream test suite in the baseline commit.
@@ -98,3 +99,32 @@ synchronization and cutout quality. A prepared composition or renderer version
 check does not establish a successful MP4 or visual approval. Report the exact
 commands executed, failures, missing dependencies and output paths. Never claim
 transcription, segmentation, rendering or visual checks that were not performed.
+
+
+## Automatic private editing
+
+Use `$auto-reels` (or `$editing-skills:auto-reels` when namespaced); Claude uses
+`/auto-reels`. Read [docs/AUTO_REELS.md](docs/AUTO_REELS.md). One command:
+`./auto-reels --url-env AUTO_REELS_INPUT_URL` or `./auto-reels /workspace/private/clip.mov`.
+The link is a Google Drive file link authorized by the user. Do not change its
+sharing. The task-bound environment needs real GROQ_API_KEY, approved Drive/Groq
+hosts and, for private authenticated Drive transfers, GOOGLE_DRIVE_ACCESS_TOKEN.
+Never ask for tokens in chat or create placeholders. Inspect `./auto-reels --doctor`.
+Published environment configuration does not prove a running task has those secrets.
+
+`kit/setup-auto.sh` installs a separate pinned HyperFrames 0.8.214 runtime without
+Node lifecycle scripts, with system Chromium and Python ONNX for matting. It needs
+Python 3.12+ for the pinned auto dependencies; original skills retain their own
+setup. Do not silently alter the legacy HyperFrames default. Automatic adapters
+invoke the original builder functions/templates but centralize captions, title,
+voice remux and QA. Original standalone commands retain their behavior.
+
+All `.autoreels/` jobs are private and ignored. Never commit jobs, input links,
+transcripts, audio, models, downloaded media or OAuth credentials. Do not upload
+private footage to GitHub. Drive uploads require an explicit destination-folder
+environment variable and OAuth permission; the code refuses public folders and
+never calls sharing APIs. The output inherits the approved folder's access.
+Return a real supported artifact or an authorized Drive link, not a pretend
+attachment. Rendering without Groq or with a controlled fixture is not an
+end-to-end production validation. Safe overlay geometry does not prove that no
+face is occluded; inspect the contact sheet.

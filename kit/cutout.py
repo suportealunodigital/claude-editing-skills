@@ -14,6 +14,8 @@ import subprocess
 import sys
 import time
 import urllib.request
+import tempfile
+import os
 from pathlib import Path
 
 import numpy as np
@@ -27,7 +29,15 @@ def model_path(name):
     if not p.exists():
         p.parent.mkdir(exist_ok=True)
         print(f'downloading the {name} matting model (one time)...', flush=True)
-        urllib.request.urlretrieve(URL.format(name), p)
+        fd, temp = tempfile.mkstemp(prefix='rvm-', suffix='.download', dir=p.parent)
+        os.close(fd)
+        try:
+            urllib.request.urlretrieve(URL.format(name), temp)
+            if Path(temp).stat().st_size < 1024**2:
+                raise ValueError('Downloaded matting model is incomplete.')
+            Path(temp).replace(p)
+        finally:
+            Path(temp).unlink(missing_ok=True)
     return p
 
 
@@ -41,7 +51,9 @@ def probe(clip):
 def cutout(clip, out, model='mobilenetv3', ratio=0.25):
     import onnxruntime as ort
     w, h, fps, n = probe(clip)
-    sess = ort.InferenceSession(str(model_path(model)), providers=['CPUExecutionProvider'])
+    options = ort.SessionOptions()
+    options.intra_op_num_threads = 2
+    sess = ort.InferenceSession(str(model_path(model)), sess_options=options, providers=['CPUExecutionProvider'])
     rec = [np.zeros([1, 1, 1, 1], np.float32)] * 4
     dr = np.array([ratio], np.float32)
     dec = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', str(clip), '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'],
@@ -67,8 +79,9 @@ def cutout(clip, out, model='mobilenetv3', ratio=0.25):
     enc.stdin.close()
     enc.wait()
     dec.wait()
-    if enc.returncode:
-        sys.exit('ffmpeg could not write the cutout')
+    if enc.returncode or dec.returncode or not i:
+        Path(out).unlink(missing_ok=True)
+        sys.exit('ffmpeg could not decode/write the cutout')
     print(f'wrote {out}  ({i} frames, {time.time() - t0:.0f}s)')
     return Path(out)
 

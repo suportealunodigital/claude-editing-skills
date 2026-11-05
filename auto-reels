@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PY="$ROOT/kit/.venv/bin/python"
+if [ ! -x "$PY" ] || { [ "${1:-}" != "--doctor" ] && [ -z "${HYPERFRAMES_CLI:-}" ] && [ ! -f "$ROOT/kit/.hyperframes/node_modules/hyperframes/dist/cli.js" ]; }; then
+  bash "$ROOT/kit/setup-auto.sh"
+fi
+if [ -z "${HYPERFRAMES_BROWSER_PATH:-}" ] && command -v chromium >/dev/null; then
+  export HYPERFRAMES_BROWSER_PATH="$(command -v chromium)"
+fi
+exec "$PY" "$ROOT/kit/auto_reels.py" "$@"

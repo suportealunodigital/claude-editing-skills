@@ -113,3 +113,26 @@ Use `bash install-codex.sh --skip-setup` for discovery only, or
 `$orbit-reel skills/orbit-reel/example.json`.
 See [AGENTS.md](AGENTS.md) for all eleven invocations, Cloud dependencies,
 network/credential setup and honest output verification.
+
+
+## Automatic private Reels (Codex Cloud / Claude)
+
+Use `$auto-reels` (Claude: `/auto-reels`) or one command:
+
+```bash
+./auto-reels --url-env AUTO_REELS_INPUT_URL
+# A real uploaded file also works:
+./auto-reels /workspace/private/clip.mov
+```
+
+The coordinator chooses among the eleven treatments, calls the original builders,
+adds word-timed pt-BR captions/title and preserves source audio. Google Drive
+streaming supports inputs above 32 MiB; the default application limit is 2 GiB.
+Private links need authorized OAuth access, and the active Cloud task needs real
+GROQ_API_KEY and permitted network hosts. No sharing permissions are changed.
+Use `--drive-folder-env AUTO_REELS_DRIVE_FOLDER_ID` for an authorized private Drive
+upload, or return a real task attachment where the client supports it.
+
+See [the complete setup and single-command guide](docs/AUTO_REELS.md) and
+[actual test results and remaining configuration](docs/AUTO_REELS_TEST_REPORT.md).
+The original eleven skill commands and Claude plugin remain supported.

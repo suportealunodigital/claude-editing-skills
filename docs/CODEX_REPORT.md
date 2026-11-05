@@ -149,3 +149,11 @@ nesse checkout para atualizar o catálogo e siga AGENTS.md.
 
 Os logs anexados preservam o resultado do setup, dos testes e do render. O MP4
 anexado é o Picture Stack realmente gerado nesta execução, com mídia de exemplo.
+
+
+## Evolução posterior: auto-reels
+
+O relatório acima registra a etapa original de 4/11/2026. A coordenação automática,
+Drive privado, runtime isolado, novos testes e limitações observadas em 5/11 estão
+em [AUTO_REELS.md](AUTO_REELS.md) e [AUTO_REELS_TEST_REPORT.md](AUTO_REELS_TEST_REPORT.md).
+A evolução adiciona uma skill coordenadora sem remover os onze tratamentos.

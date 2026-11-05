@@ -1,0 +1,6 @@
+# Separate from the original setup. Versions tested in this Cloud executor.
+groq==1.7.0
+httpx==0.28.1
+numpy==2.5.4
+pillow==13.0.0
+onnxruntime==1.31.1

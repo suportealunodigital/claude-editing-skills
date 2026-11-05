@@ -8,7 +8,7 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-NAMES = {'trial-reels', 'behind-the-person', 'explainer', 'split-screen',
+NAMES = {'auto-reels', 'trial-reels', 'behind-the-person', 'explainer', 'split-screen',
          'ranking-list', 'storytelling', 'shape-shift', 'picture-stack',
          'scene-switch', 'visual-notes', 'orbit-reel'}
 

@@ -7,3 +7,11 @@ __pycache__/
 .DS_Store
 
 work/
+
+# Private automatic editing jobs and runtime caches. Never git-add media jobs.
+.autoreels/
+kit/.hyperframes/
+kit/.npm-cache/
+.env
+.env.*
+*.env

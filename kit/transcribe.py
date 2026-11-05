@@ -32,7 +32,7 @@ def audio(video, dst, start, dur):
 
 def call(client, path, language):
     kw = dict(file=(path.name, path.read_bytes()), model=MODEL, response_format='verbose_json',
-              timestamp_granularities=['word', 'segment'], temperature=0.0, prompt=PROMPT)
+              timestamp_granularities=['word', 'segment'], temperature=0.0, prompt=('Hum, então, é, tipo, a a ideia é, espera, certo. Transcreva literalmente em português brasileiro.' if language == 'pt' else PROMPT))
     if language:
         kw['language'] = language
     r = client.audio.transcriptions.create(**kw)
@@ -45,7 +45,7 @@ def transcribe(video, out=None, language=None):
         sys.exit('GROQ_API_KEY is not set. Get a free key at https://console.groq.com/keys and export it.')
     video = Path(video).resolve()
     out = Path(out) if out else video.with_name(video.stem + '.transcript.json')
-    client = Groq()
+    client = Groq(timeout=120.0, max_retries=2)
     total = duration(video)
     words, segments, text = [], [], []
     with tempfile.TemporaryDirectory() as tmp:
@@ -54,6 +54,8 @@ def transcribe(video, out=None, language=None):
             dur = min(CHUNK, total - t)
             a = Path(tmp) / f'chunk{int(t)}.flac'
             audio(video, a, t, dur)
+            if a.stat().st_size > 24 * 1024**2:
+                raise ValueError('Extracted audio chunk exceeds the 24 MiB upload safety cap.')
             r = call(client, a, language)
             for w in r.get('words') or []:
                 words.append(dict(word=w['word'], start=round(w['start'] + t, 3), end=round(w['end'] + t, 3)))
@@ -61,7 +63,7 @@ def transcribe(video, out=None, language=None):
                 segments.append(dict(start=round(s['start'] + t, 3), end=round(s['end'] + t, 3), text=s['text']))
             text.append(r.get('text', ''))
             t += dur
-    data = dict(text=' '.join(x.strip() for x in text), segments=segments, words=words, duration=total, model=MODEL)
+    data = dict(text=' '.join(x.strip() for x in text), segments=segments, words=words, duration=total, model=MODEL, language=language)
     out.write_text(json.dumps(data, indent=1, ensure_ascii=False))
     return out
 
