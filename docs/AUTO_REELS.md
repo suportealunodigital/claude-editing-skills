@@ -12,6 +12,43 @@ fotográficos ficam inelegíveis; não usamos fotos de terceiros como se fossem 
 usuário. Não inventamos métricas, provas sociais, nomes ou tiers. Títulos e cartões
 são trechos da transcrição. Rankings exigem um veredito de tier explícito.
 
+## Instalação e descoberta no Codex Cloud
+
+Neste fork, selecione o repositório `suportealunodigital/claude-editing-skills`,
+branch `codex-editing-skills`, e execute a tarefa dentro do checkout. A `main`
+original não contém a coordenação auto-reels. Se o clone buscar somente main:
+
+```bash
+git fetch origin refs/heads/codex-editing-skills:refs/remotes/origin/codex-editing-skills
+git switch --no-track codex-editing-skills
+# Se a branch local ainda não existir:
+# git switch --no-track -c codex-editing-skills origin/codex-editing-skills
+bash install-codex.sh --skip-setup
+bash install-codex.sh --check
+```
+
+Compare `git rev-parse HEAD` com `git ls-remote origin refs/heads/codex-editing-skills`.
+Para atualizar uma branch local sem alterações, use
+`git merge --ff-only origin/codex-editing-skills` após o fetch. O instalador exige
+as doze skills, verifica colisões antes de criar links e preserva diretórios
+existentes. `--skip-setup` e `--check` não instalam Groq nem outros pacotes.
+`--check` apenas verifica os links; não comprova atualização do catálogo.
+
+A fonte fica em `skills/auto-reels/SKILL.md`; o link relativo versionado
+`.agents/skills/auto-reels -> ../../skills/auto-reels` mantém os scripts e o kit
+no mesmo checkout. Não copie apenas o SKILL.md. Dependências Python estão em
+`kit/requirements-auto.txt`, renderer e lockfile em `kit/hyperframes-auto/`.
+Os entrypoints são `auto-reels`, `skills/auto-reels/build.py` e `kit/auto_reels.py`;
+os módulos ficam em `kit/autoreels/`.
+
+Inicie **uma nova tarefa dentro deste checkout**, com essa branch selecionada,
+para recarregar o catálogo. Confira `skills/list` quando disponível e invoque
+`$auto-reels` (ou o nome qualificado exibido pelo cliente). Um catálogo vazio
+na tarefa antiga não invalida os links, mas impede afirmar descoberta dinâmica.
+Para testar somente invocação, use `$auto-reels apenas diagnóstico, sem editar`.
+`./auto-reels --help` e `./auto-reels --doctor` não acionam setup nem edição.
+Dependências ausentes continuam sendo um erro de runtime; descoberta não é render.
+
 ## 1. Preparar o ambiente publicado
 
 Selecione no Codex o ambiente **claude-editing-skills** que você configurou e

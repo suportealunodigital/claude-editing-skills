@@ -51,6 +51,50 @@ class CodexSkills(unittest.TestCase):
             self.assertEqual((collision / 'keep').read_text(), 'user data')
             self.assertNotEqual(subprocess.run(['bash', str(root / 'install-codex.sh'), '--bad'], capture_output=True).returncode, 0)
 
+    def test_installer_requires_auto_reels_before_creating_links(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copy(ROOT / 'install-codex.sh', root)
+            for name in NAMES - {'auto-reels'}:
+                folder = root / 'skills' / name
+                folder.mkdir(parents=True)
+                (folder / 'SKILL.md').write_text('test')
+            result = subprocess.run(['bash', str(root / 'install-codex.sh'), '--skip-setup'],
+                                    capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('skills/auto-reels/SKILL.md', result.stderr)
+            self.assertFalse((root / '.agents').exists())
+
+    def test_check_is_read_only_and_detects_missing_link(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copy(ROOT / 'install-codex.sh', root)
+            for name in NAMES:
+                folder = root / 'skills' / name
+                folder.mkdir(parents=True)
+                (folder / 'SKILL.md').write_text('test')
+            cmd = ['bash', str(root / 'install-codex.sh')]
+            self.assertNotEqual(subprocess.run(cmd + ['--check'], capture_output=True).returncode, 0)
+            self.assertFalse((root / '.agents').exists())
+            subprocess.run(cmd + ['--skip-setup'], check=True, capture_output=True)
+            subprocess.run(cmd + ['--check'], check=True, capture_output=True)
+            (root / '.agents/skills/auto-reels').unlink()
+            self.assertNotEqual(subprocess.run(cmd + ['--check'], capture_output=True).returncode, 0)
+            self.assertFalse((root / '.agents/skills/auto-reels').exists())
+
+    def test_inspection_never_runs_runtime_setup(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copy(ROOT / 'auto-reels', root)
+            (root / 'kit').mkdir()
+            (root / 'kit/setup-auto.sh').write_text('touch "$(dirname "$0")/SETUP_RAN"; exit 1\n')
+            (root / 'kit/auto_reels.py').write_text('import sys; print(sys.argv[1])\n')
+            for args in (['--help'], ['-h'], ['--doctor'], ['--doctor', '--help']):
+                result = subprocess.run(['bash', str(root / 'auto-reels'), *args],
+                                        check=True, capture_output=True, text=True)
+                self.assertIn(args[0], result.stdout)
+                self.assertFalse((root / 'kit/SETUP_RAN').exists())
+
     def test_original_claude_installer_still_links_all_skills(self):
         # Stub setup only to check installer wiring without network/install side effects.
         with tempfile.TemporaryDirectory() as tmp:

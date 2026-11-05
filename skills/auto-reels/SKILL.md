@@ -16,6 +16,13 @@ Never commit it. Real GROQ_API_KEY and network access must be present in this ta
 If absent, report the task-bound executor's actual state; don't invent credentials
 or claim you switched to another environment.
 
+Before processing, inspect `./auto-reels --doctor`. Diagnostic and help commands
+never install dependencies; report missing Python dependencies if inspection fails. If the user
+asks only for installation, discovery or validation, stop after those checks.
+Do not download, transcribe, render or upload video without an editing request.
+Discovery uses `.agents/skills/auto-reels/`; start a new Codex task inside this
+checkout if the running task's skill catalog has not refreshed.
+
 One command from the repository root:
 
 ```bash

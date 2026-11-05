@@ -2,6 +2,15 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PY="$ROOT/kit/.venv/bin/python"
+# Inspection must never install packages or warm up a renderer.
+for arg in "$@"; do
+  case "$arg" in
+    --doctor|--help|-h)
+      if [ ! -x "$PY" ]; then PY=python3; fi
+      exec "$PY" "$ROOT/kit/auto_reels.py" "$@"
+      ;;
+  esac
+done
 if [ ! -x "$PY" ] || { [ "${1:-}" != "--doctor" ] && [ -z "${HYPERFRAMES_CLI:-}" ] && [ ! -f "$ROOT/kit/.hyperframes/node_modules/hyperframes/dist/cli.js" ]; }; then
   bash "$ROOT/kit/setup-auto.sh"
 fi
